@@ -1,0 +1,170 @@
+
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+null
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
+
+null
+null
+null
+X: 355.8125	Y: -6.1250	Z: 84.0625
