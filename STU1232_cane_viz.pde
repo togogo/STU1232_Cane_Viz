@@ -21,11 +21,16 @@ color scrBG = color(50);
 color plotBG = color(80);
 color white = color(255);
 color lineCol = color(127, 23, 255);
+color viblineCol = color(223, 103, 140);
 
 
 //possible max/min values coming from the accelerometer
-int maxVal = 360;
-int minVal = -360;
+int maxXVal = 360;
+int minXVal = -360;
+int maxYVal = 90;
+int minYVal = -90;
+int maxZVal = 180;
+int minZVal = -180;
 
 //not sure if I'm going to need them, but I'm gonna write them anyway
 int x;
@@ -38,6 +43,9 @@ int vib;//incoming vibration values
 ArrayList<Integer> xPlot = new ArrayList<Integer>();
 ArrayList<Integer> yPlot = new ArrayList<Integer>();
 ArrayList<Integer> zPlot = new ArrayList<Integer>();
+
+//plots of vibrtion
+ArrayList<Integer> vibPlot = new ArrayList<Integer>();
 
 int PlotH = 280;
 int PlotW = 800;
@@ -58,6 +66,19 @@ int zPlotStartYPos = yPlotH + xPlotH + PlotN*3;
 int zPlotW = PlotW;
 int zPlotH = PlotH;
 
+int vibPlotStartXPos = 20;
+int vibPlotStartYPos = 520;
+int vibPlotW = 800;
+int vibPlotH = 500;
+int minVib = -800;
+int maxVib = 800;
+
+int demoSheetStartXPos = 20;
+int demoSheetStartYPos = 200;
+int demoW = 800;
+int demoH = 280;
+
+
 PImage logo;
 
 int textMid = 20;
@@ -67,31 +88,31 @@ int textSmall = 15;
 
 void setup() {
 
-  size(1680, 1050, P3D);
-  
+  size(1680, 1050);
+
   cp5 = new ControlP5(this);
-  
+
   PFont font = createFont("arial", textSmall);
 
   printArray(Serial.list());//get available list of serials
   String portName = Serial.list()[8]; //change the value to match your port.
   myPort = new Serial(this, portName, 9600);
   connectedPort = portName;
-  
-  
+
+
   cp5.addTextfield("command")
-     .setPosition(15,110)
-     .setSize(300,40)
-     .setFont(font)
-     .setAutoClear(false)
-     ;
-       
+    .setPosition(15, 110)
+    .setSize(300, 40)
+    .setFont(font)
+    .setAutoClear(false)
+    ;
+
   cp5.addBang("send")
-     .setPosition(340,110)
-     .setSize(80,40)
-     .setFont(font)
-     .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
-     ;   
+    .setPosition(340, 110)
+    .setSize(80, 40)
+    .setFont(font)
+    .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
+    ;   
 
 
   logo = loadImage("cady_logo.png");
@@ -113,8 +134,9 @@ void draw() {
   text("X Rotation:", xPlotStartXPos, xPlotStartYPos - textMid/2);
   text("Y Rotation:", yPlotStartXPos, yPlotStartYPos - textMid/2);
   text("Z Rotation:", zPlotStartXPos, zPlotStartYPos - textMid/2);
-  
-  
+  text("Vibration:", vibPlotStartXPos, vibPlotStartYPos - textMid/2);
+
+
   fill(plotBG);
   noStroke();
   //rect(10,  400, 500, 500);
@@ -173,30 +195,32 @@ void draw() {
   //plotGraph(yPlotStartXPos, yPlotStartYPos, yPlotW, yPlotH, mouseY, yPlot);
   //plotGraph(zPlotStartXPos, zPlotStartYPos, zPlotW, zPlotH, mouseY, zPlot);
 
-  plotGraph(xPlotStartXPos, xPlotStartYPos, xPlotW, xPlotH, x, xPlot);
-  plotGraph(yPlotStartXPos, yPlotStartYPos, yPlotW, yPlotH, y, yPlot);
-  plotGraph(zPlotStartXPos, zPlotStartYPos, zPlotW, zPlotH, z, zPlot);
+  plotGraph(xPlotStartXPos, xPlotStartYPos, xPlotW, xPlotH, x, xPlot, minXVal, maxXVal, lineCol);
+  plotGraph(yPlotStartXPos, yPlotStartYPos, yPlotW, yPlotH, y, yPlot, minYVal, maxYVal, lineCol);
+  plotGraph(zPlotStartXPos, zPlotStartYPos, zPlotW, zPlotH, z, zPlot, minZVal, maxZVal, lineCol);
+
   
-  plotVib();
-  
-  println(vib);
+  plotGraph(vibPlotStartXPos, vibPlotStartYPos, vibPlotW, vibPlotH, vib, vibPlot, minVib, maxVib, viblineCol);
+
+  showDemoCheatSheet();
+  //println(vib);
 }
 
 public void send() {
-  
+
   //also whatever to send the value to arduino
-  textValue = cp5.get(Textfield.class,"command").getText(); 
+  textValue = cp5.get(Textfield.class, "command").getText(); 
   //println(textValue);
   myPort.write(textValue);
-  cp5.get(Textfield.class,"command").clear();
+  cp5.get(Textfield.class, "command").clear();
 }
 
 void controlEvent(ControlEvent theEvent) {
-  if(theEvent.isAssignableFrom(Textfield.class)) {
+  if (theEvent.isAssignableFrom(Textfield.class)) {
     println("controlEvent: accessing a string from controller '"
-            +theEvent.getName()+"': "
-            +theEvent.getStringValue()
-            );
+      +theEvent.getName()+"': "
+      +theEvent.getStringValue()
+      );
   }
 }
 
@@ -207,7 +231,7 @@ public void command(String theText) {
 
 
 
-void plotGraph(int _x, int _y, int _w, int _h, int _val, ArrayList<Integer> _l) {
+void plotGraph(int _x, int _y, int _w, int _h, int _val, ArrayList<Integer> _l, int _minVal, int _maxVal, color _c) {
   /*
 NOTE:
    A small function to plot the graph of a given intake value.
@@ -225,13 +249,13 @@ NOTE:
   rect(_x, _y, _w, _h);
 
   //map the incoming value of 0 to 360 to fit within the size of the plot
-  int mappedVal = (int)map(_val, maxVal, minVal, _y, _y + _h);//how it will be in the real thing
+  int mappedVal = (int)map(_val, _maxVal, _minVal, _y, _y + _h);//how it will be in the real thing
   //int mappedVal = (int)map((float)_val, 0, (float)height, (float)_y, (float)(_y + _h));
 
   //always make the last index with the latest values recorded
   _l.add(mappedVal);
 
-  stroke(lineCol);
+  stroke(_c);
   strokeWeight(1);
 
   for (int i = 0; i < _l.size(); i++) {
@@ -249,21 +273,29 @@ NOTE:
   if (_l.size() > _w) {
     _l.remove(0);
   }
-  
+
   stroke(white);
   line(_x, _y + _h/2, _x + _w, _y + _h/2);
-  
+
   fill(white);
   textSize(textSmall);
   text("current incoming: " + _val, _x, _y + textSmall);
-  
+
   fill(white);
   textSize(textSmall);
-  text(maxVal, _x + _w - 30, _y + textSmall);
-  text(minVal, _x + _w - 38, _y + _h);
+  text(_maxVal, _x + _w - 30, _y + textSmall);
+  text(_minVal, _x + _w - 38, _y + _h);
 }
 
-void plotVib(){
+void showDemoCheatSheet(){
   
-  //ellipse();
+  fill(plotBG);
+  noStroke();
+  rect(demoSheetStartXPos, demoSheetStartYPos, demoW, demoH);
+  fill(white);
+  textSize(textSmall);
+  text("t: turn LEDs ON", demoSheetStartXPos + 20, demoSheetStartYPos + 25);
+  text("f: turn LEDs OFF", demoSheetStartXPos + 150, demoSheetStartYPos + 25);
+  text("0: No Vibration Guidance", demoSheetStartXPos + 290, demoSheetStartYPos + 25);
+  text("1-3: Change gait guidance vibration", demoSheetStartXPos + 490, demoSheetStartYPos + 25);
 }
